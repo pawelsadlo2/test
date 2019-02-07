@@ -5,6 +5,8 @@ import javax.inject._
 import play.api._
 import play.api.mvc._
 import java.util.Calendar
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
@@ -26,7 +28,8 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   }
 
   def multiply(x: Float, y: Float) = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.multiply(multiplication(x, y)))
+    val json = Json.toJson(multiplication(x, y))
+    Ok(json)
   }
 
   def hour() = Action { implicit request: Request[AnyContent] =>
@@ -38,6 +41,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
 
   def getHour: String = {
     def calInstance: Calendar = Calendar.getInstance()
+
     val h: Int = calInstance.get(Calendar.HOUR_OF_DAY)
     h.toString
   }
